@@ -1,0 +1,152 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+import javax.sound.midi.Soundbank;
+
+
+class Pasien {
+    String nama;
+    String umur;
+    String alamat;
+    String keluhan;
+    int nomorAntrian;
+
+    public Pasien ( String nama, String umur, String alamat, String keluhan, int nomorAntrian ) {
+        this.nama = nama;
+        this.umur = umur;
+        this.alamat = alamat;
+        this.keluhan = keluhan;
+        this.nomorAntrian = nomorAntrian;
+
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public String getKeluhan() {
+        return keluhan;
+    }
+
+    public int getNomorAntrian() {
+        return nomorAntrian;
+    }
+}
+
+class Pelayanan {
+    Queue<Pasien> pelayananPasien = new LinkedList<>();
+    static int urutanAntrian = 1;
+
+    public void TambahPasien() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("=====================");
+        System.out.println("|| Menambah Pasien ||");
+        System.out.println("=====================");
+        System.out.println(" ");
+        System.out.print("Silahkan memasukkan nama Pasien    : ");
+        String namaPasien = scanner.nextLine();
+        System.out.print("Silahkan memasukkan Umur Pasien    : ");
+        String umurPasien = scanner.nextLine();
+        System.out.print("Silahkan memasukkan alamat Pasien  : ");
+        String alamatPasien = scanner.nextLine();
+        System.out.print("Silahkan memasukkan keluhan Pasien : ");
+        String keluhanPasien = scanner.nextLine();
+
+        Pasien pasien = new Pasien(namaPasien, umurPasien, keluhanPasien, alamatPasien, urutanAntrian++);
+        pelayananPasien.add(pasien);
+        System.out.println(" ");
+        System.out.println("==========================================");
+        System.out.println("||        Telah Menambahkan Pasien      ||");
+        System.out.println("==========================================");
+        System.out.println("|| Nama           : " + pasien.getNama() + "\t\t||");
+        System.out.println("|| Umur           : " + pasien.getUmur() + "\t\t||");
+        System.out.println("|| Alamat         : " + pasien.getAlamat() + "\t\t||");
+        System.out.println("|| Keluhan        : " + pasien.getKeluhan() + "\t\t||");
+        System.out.println("|| Nomor Antrian  : " + pasien.getNomorAntrian() + "\t\t\t||");
+        System.out.println("==========================================");
+        
+    }
+
+    public void MelihatDaftarPasien() {
+        if (pelayananPasien.isEmpty()) {
+            System.out.println(" ");
+            System.out.println("===========================");
+            System.out.println("||   Tidak Ada Antrian   ||");
+            System.out.println("===========================");
+            System.out.println(" ");
+        } else {
+            System.out.println("==================================================");
+            System.out.println("||                Daftar Pasien                 ||");
+            System.out.println("==================================================");
+
+            for (Pasien cek : pelayananPasien) {
+                System.out.println("|| Nomor Antrian " + cek.getNomorAntrian() + " dengan nama pasien " + cek.getNama() + "\t||");
+            }
+            System.out.println("==================================================");
+        
+        }
+    }
+
+    public void MenanganiPasien() {
+        if (pelayananPasien.isEmpty()) {
+            System.out.println(" ");
+            System.out.println("==========================================");
+            System.out.println("||   Tidak Ada Pasien Untuk Ditangani   ||");
+            System.out.println("==========================================");
+            System.out.println(" ");
+        } else {
+            Pasien penanganan = pelayananPasien.poll();
+            System.out.println("============================================================");
+            System.out.println("|| Pasien dengan nama : " + penanganan.getNama() + " antrian ke " + penanganan.getNomorAntrian() + " telah ditangani ||");
+            System.out.println("============================================================");
+        }
+    }
+    
+}
+
+public class AntrianDokter {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Pelayanan pelayanan = new Pelayanan();
+
+        boolean program = true;
+
+        while (program) {
+            System.out.println("===================================");
+            System.out.println("||    Layanan Dokter Subandi     ||");
+            System.out.println("===================================");
+            System.out.println("|| 1. Menambah Pasien            ||");
+            System.out.println("|| 2. Memeriksa Antian           ||");
+            System.out.println("|| 3. Menangani Pasien           ||");
+            System.out.println("|| 4. Keluar                     ||");
+            System.out.println("===================================");
+            System.out.print("Silahkan Pilih : ");
+            int pilih = scanner.nextInt();
+            
+
+            if (pilih == 1) {
+                pelayanan.TambahPasien();
+            } else if (pilih == 2 ) {
+                pelayanan.MelihatDaftarPasien();
+            } else if (pilih == 3 ) {
+                pelayanan.MenanganiPasien();
+            } else if (pilih == 4) {
+                program = false;
+            } else {
+                System.out.println("Maaf, Pilihan anda salah");
+            }
+        }
+
+        System.out.println("program telah selesai dieksekusi");
+    }
+}
